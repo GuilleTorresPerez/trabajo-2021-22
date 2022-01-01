@@ -29,25 +29,25 @@ using namespace std;
 bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio) {
 
     string ignore;
-    string fechaS, horaS, precioS;
+    string fechaS, precioS;
 
     while(!f.eof()) {
         getline(f, ignore, ';');
-        getline(f, fechaS, ';');
-
-        fecha.dia = stoi(fechaS.substr(0, 1));
-        fecha.mes = stoi(fechaS.substr(3, 4));
-        fecha.agno = stoi(fechaS.substr(6, 9));
-
-        getline(f, horaS, ';');
-
-        hora = stoi(horaS);
+        getline(f, ignore, ';');
+        getline(f, ignore, ';');
+        getline(f, ignore, ';');
 
         getline(f, precioS, ';');
+        
+        precio = stod(precioS);
 
-        precio = stoi(precioS);
+        getline(f, fechaS);
 
-        getline(f, ignore);
+        fecha.agno = stoi(fechaS.substr(0, 3));
+        fecha.mes = stoi(fechaS.substr(5,6));
+        fecha.dia = stoi(fechaS.substr(8,9));
+
+        hora = stoi(fechaS.substr(11,12));
 
         return true;
 
@@ -73,7 +73,20 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
  *       «nombreFichero» correctamente, y «false» en caso contrario.
  */
 bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const unsigned mesFinal, GastoDiario registros[]) {
+    
+    ofstream archivo;
+
+    archivo.open(nombreFichero, ios::out);
+
+    if (archivo.fail()) {
+        cout << "No se ha podido leer el archivo con la ruta especificada." << endl;
+        return false;
+    }
+
+
+
     return true;
+
 }
 
 /*

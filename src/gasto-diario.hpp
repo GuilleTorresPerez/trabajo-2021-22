@@ -41,6 +41,7 @@ const unsigned ULTIMO_MES = 11;
 struct GastoDiario {
     double consumo[NUM_HORAS];
     double precio[NUM_HORAS]; 
+    Fecha fecha;
 };
 
 
