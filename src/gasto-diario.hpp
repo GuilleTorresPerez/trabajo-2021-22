@@ -39,7 +39,8 @@ const unsigned ULTIMO_MES = 11;
  * día (en kWh), junto con los 24 precios horarios de ese mismo día (en €/kWh)
  */
 struct GastoDiario {
-    // COMPLETAR
+    double consumo[NUM_HORAS];
+    double precio[NUM_HORAS]; 
 };
 
 
