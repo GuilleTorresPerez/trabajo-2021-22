@@ -1,0 +1,71 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+build/
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+bin/
+
+# CodeLite
+compile_flags.txt
+.codelite/
+!scripts-correccion/pr4/Makefile
+!scripts-correccion/pr4/resultados-esperados.txt
+!scripts-correccion/trabajo/resultados-opcion-4.txt
+!tema-17-romanos/procesador-expresiones/expresiones.txt
+compile_commands.json
+*/*/Debug/
+
+#scripts-correccion
+scripts-correccion/*/entregas-todas
+scripts-correccion/*/entregas-pendientes
+!scripts-correccion/*/entregas-pendientes/AAA-PROFESOR
+scripts-correccion/*/bin
+compile_flags.txt
+scripts-correccion/trabajo/workspace/proyecto/correccion-trabajo.txt
+resultados/*.txt
+
+# Office open files
+~$*x
+
+# Result data
+practica5/datos/prueba.bmp
+practica6/datos/pruebas-2000.csv
+practica6/datos/pruebas-10.csv
+tema-15-ficheros-binarios/prog1.dat
+problemas-t14-ficheros-texto-CLASE/alumnos-tardes.txt
+*/bin/*
+primos.dat
+examen-2021-01/datos/subida.txt
+trabajo-2020-21/datos/localidades-*.txt
+trabajo-2019-20/resultados/
+trabajo-2019-20-actualizado/resultados/
+examen-2021-09/datos/resultado.txt
+tema-15-ficheros-binarios/ficheros-nif-binarios/alt?.dat

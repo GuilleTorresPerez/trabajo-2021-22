@@ -1,0 +1,54 @@
+{
+    "tasks": [
+        {
+            "label": "Compilar «electricidad»",
+            "type": "shell",
+            "command": "make",
+            "windows": {
+                "command": "mingw32-make.exe"
+            },
+            "args": [
+                "all"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Ejecutar «electricidad»",
+            "type": "shell",
+            "command": "bin/electricidad",
+            "windows": {
+                "command": "chcp 65001 ; bin\\electricidad.exe"
+            },
+            "dependsOn": "Compilar «electricidad»",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Limpiar resultados de compilación",
+            "type": "shell",
+            "command": "make",
+            "windows": {
+                "command": "mingw32-make.exe",
+            },
+            "args": [
+                "clean"
+            ],
+            "problemMatcher": ["$gcc"],
+            "group": "build",
+       },
+    ],
+    "presentation": {
+        "showReuseMessage": true,
+        "panel": "shared",
+        "reveal": "always",
+        "focus": true,
+    },
+    "version": "2.0.0"
+}
