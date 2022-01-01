@@ -39,8 +39,6 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
 
         getline(f, precioS, ';');
         
-        precio = stod(precioS);
-
         getline(f, fechaS);
 
         fecha.agno = stoi(fechaS.substr(0, 3));
@@ -48,6 +46,8 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
         fecha.dia = stoi(fechaS.substr(8,9));
 
         hora = stoi(fechaS.substr(11,12));
+
+        precio = stod(precioS);
 
         return true;
 
@@ -74,16 +74,33 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
  */
 bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const unsigned mesFinal, GastoDiario registros[]) {
     
-    ofstream archivo;
+    ifstream archivo;
 
-    archivo.open(nombreFichero, ios::out);
+    archivo.open(nombreFichero, ios::in);
 
     if (archivo.fail()) {
         cout << "No se ha podido leer el archivo con la ruta especificada." << endl;
         return false;
     }
 
+    GastoDiario aux;
+    unsigned horaAux;
+    double precioAux;
 
+    unsigned index = 0;
+
+    for (int i = 0; i < MAX_DIAS; i++) {
+        for (int j = 0; j < NUM_HORAS; j++) {
+            if (leerPrecioHorario(archivo, aux.fecha, horaAux, precioAux)) {
+                if (aux.fecha.mes >= mesInicial && aux.fecha.mes <= mesFinal) {
+                    registros[i].fecha = aux.fecha;
+                    registros[i].precio[j] = precioAux;
+                }
+            }
+        }
+    }
+
+    // TODO: Esto es una pedazo de chapuza, si encuentras una mejor manera de hacer esto arreglalo :)
 
     return true;
 
@@ -104,7 +121,32 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
  *       fichero en el intento de lectura y «false» en caso contrario.
  */
 bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consumo) {
-    return true;
+    
+    string ignore;
+    string fechaS, consumoS, horaS;
+
+    while(!f.eof()) {
+        getline(f, ignore, ';');
+        
+        getline(f, fechaS, ';');
+        getline(f, horaS, ';');
+        getline(f, consumoS, ';');
+
+        getline(f, ignore);
+
+        fecha.agno = stoi(fechaS.substr(6, 9));
+        fecha.mes = stoi(fechaS.substr(3,4));
+        fecha.dia = stoi(fechaS.substr(0,1));
+
+        hora = stoi(horaS);
+
+        consumo = stod(consumoS);
+
+        return true;
+
+    }
+
+    return false;
 }
 
 /*
