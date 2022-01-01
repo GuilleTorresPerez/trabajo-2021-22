@@ -48,26 +48,33 @@ void escribirInforme(ostream& f,
 
 
 void pedirInformacion (char usuario, unsigned mesInicial, unsigned mesFinal) {
+    
+    bool fechaCorrecta = true;
+
     cout << "Escriba el nombre del usuario: ";
     cin >> usuario;
 
     do {
         cout << endl << "Escriba el mes inicial y el final: ";
         cin >> mesInicial >> mesFinal;
+        fechaCorrecta = true;
         
         if (mesInicial < 1 || mesInicial > 12) {
             cout << "El mes inicial tiene que estar entre 1 y 11." << endl;
+            fechaCorrecta = false;
         }
-        if (mesFinal < 1 || mesInicial > 12) {
+        else if (mesFinal < 1 || mesInicial > 12) {
             cout << "El mes final tiene que estar entre 1 y 11." << endl;
+            fechaCorrecta = false;
         }
-        if (mesInicial > mesFinal) {
+        else if (mesInicial > mesFinal) {
             cout << "El mes inicial tiene que ser menor o igual que el mes final." << endl;
+            fechaCorrecta = false;
         }
 
-    } while (mesInicial > mesFinal || 
-           mesInicial < 1 || mesInicial > 12 || 
-           mesFinal < 1 || mesFinal > 12); 
+        cout << endl;
+
+    } while (!fechaCorrecta); 
 }
 
 /*
