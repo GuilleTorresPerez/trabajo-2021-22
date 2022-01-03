@@ -3,6 +3,7 @@
 void diaMasBarato(const GastoDiario regsDiarios[], const unsigned numRegs,
                   Fecha& dia, double& precioMedioMinimo) {
     GastoDiario menorPrecio = regsDiarios[0];
+    
     for (int i = 1; i < numRegs; i++) {
         if (costeMedio(menorPrecio) > costeMedio(regsDiarios[i])) {
             menorPrecio = regsDiarios[i];
@@ -14,7 +15,17 @@ void diaMasBarato(const GastoDiario regsDiarios[], const unsigned numRegs,
 
 void horaMasCara(const GastoDiario regsDiarios[], const unsigned numRegs, 
                  Fecha& dia, unsigned& hora, double& precioMaximo) {
-    GastoDiario mayorPrecio = regsDiarios[0];
-    for (int i = 1; i < numRegs; i++) {
+    unsigned hora = horaMasCara(regsDiarios[0]);
+    double precioMaximo = regsDiarios[0].precio[0];
+
+    double aux; 
+    for (int i = 0; i < numRegs; i++) {
+        aux = regsDiarios[i].precio[horaMasCara(regsDiarios[i])];
+
+        if (precioMaximo < aux) {
+            precioMaximo = aux;
+            dia.dia = regsDiarios[i].fecha.dia;
+            hora = horaMasCara(regsDiarios[i]);
+        }     
     }
 }
