@@ -11,17 +11,20 @@
  */
 unsigned horaMasCara(const GastoDiario& gasto) {
     
-    unsigned maxPrecio = 0;
+    unsigned maxPrecio = gasto.precio[0];
+    unsigned hora = 0;
 
-    for (int i = 0; i < NUM_HORAS; i++) {
+    for (unsigned i = 1; i < NUM_HORAS; i++) {
         if (maxPrecio < gasto.precio[i]) {
             maxPrecio = gasto.precio[i];
+            hora = i;
         }
     }
 
-    return maxPrecio;
-
+    return hora;
 }
+
+//Me imagino que las horas las tenemos en cuenta desde la hora 0 a la hora 23, en caso de que no habría que sumarle 1 al return.
 
 /*
  * Pre:  ---
