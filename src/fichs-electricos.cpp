@@ -166,5 +166,42 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
  *       referidos en la precondición correctamente, y «false» en caso contrario.
  */
 bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const unsigned mesFinal, GastoDiario registros[]) {
+    
+    if (nombreCliente != "a" || nombreCliente != "b") {
+        return false;
+    }
+
+    int totalIndex = 0;
+    unsigned horaAux = 0;
+
+    string mesDatosRuta = RUTA_DATOS + nombreCliente + "-2021-";
+
+    for (int i = mesInicial; i < mesFinal; i++) {
+        
+        ifstream archivo;
+        string nuevoMesDatosRuta = mesDatosRuta;
+
+        if (i < 10) {
+            nuevoMesDatosRuta = mesDatosRuta + "0";
+        }
+
+        nuevoMesDatosRuta = nuevoMesDatosRuta + to_string(i);
+
+        archivo.open(nuevoMesDatosRuta, ios::in);
+
+        if (archivo.fail()) {
+            cout << "No se ha podido leer el archivo " << nuevoMesDatosRuta << endl;
+            return false;
+        }
+
+        while(leerConsumoHorario(archivo, registros[totalIndex].fecha, horaAux, registros[totalIndex].consumo[horaAux])) {
+            horaAux++;
+        }
+
+        totalIndex++;
+
+    }
+
     return true;
+
 }
