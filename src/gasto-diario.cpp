@@ -30,7 +30,15 @@ unsigned horaMasCara(const GastoDiario& gasto) {
  */
 double costeMedio(const GastoDiario& gasto) {
     
-    return costeDiario(gasto) / NUM_HORAS;
+    double suma = 0;
+
+    for (int i = 0; i < NUM_HORAS; i++) {
+        suma += gasto.precio[i];
+    }
+
+    suma /= NUM_HORAS;
+
+    return suma;
 
 }
 
@@ -44,7 +52,7 @@ double costeDiario(const GastoDiario& gasto) {
     double suma = 0;
 
     for (int i = 0; i < NUM_HORAS; i++) {
-        suma += gasto.precio[i];
+        suma += gasto.precio[i] * gasto.consumo[i];
     }
 
     return suma;
@@ -60,14 +68,22 @@ double costeDiario(const GastoDiario& gasto) {
  */
 double costeDiarioMinimo(const GastoDiario& gasto) {
     
-    double masBarato = 999;
+    double masBaratoGasto = 999;
+    double masBaratoPrecio = 999;
 
     for (int i = 0; i < NUM_HORAS; i++) {
-        if (masBarato > gasto.precio[i]) {
-            masBarato = gasto.precio[i];
+        if (masBaratoPrecio > gasto.precio[i]) {
+            masBaratoPrecio = gasto.precio[i];
         }
     }
 
-    // TODO: No entiendo que es lo que hay que hacer en este, igual es que soy retramonger :V
+    for (int i = 0; i < NUM_HORAS; i++) {
+        double nuevoPrecio = gasto.consumo[i] * masBaratoPrecio;
+        if (masBaratoGasto > nuevoPrecio) {
+            masBaratoGasto = nuevoPrecio;
+        }
+    }
+
+    return masBaratoGasto;
 
 }
