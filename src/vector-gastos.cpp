@@ -40,3 +40,11 @@ double costeTerminoVaraiable(const GastoDiario regsDiarios[],
 }
 
 //Supongo que se refiere al coste total de todos los componentes de regsDiarios 
+
+double costeMinimoPosible(const GastoDiario regsDiarios[] , 
+                          const unsigned numRegs) {
+    double suma = 0;
+    for (unsigned i = 0; i < numRegs; i++) {
+        suma += costeDiarioMinimo(regsDiarios[i]);
+    }
+}
