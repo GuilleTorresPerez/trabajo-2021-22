@@ -71,22 +71,20 @@ double costeDiario(const GastoDiario& gasto) {
  */
 double costeDiarioMinimo(const GastoDiario& gasto) {
     
-    double masBaratoGasto = 999;
-    double masBaratoPrecio = 999;
-
-    for (int i = 0; i < NUM_HORAS; i++) {
+    double masBaratoPrecio = gasto.precio[0];
+    for (int i = 1; i < NUM_HORAS; i++) {
         if (masBaratoPrecio > gasto.precio[i]) {
             masBaratoPrecio = gasto.precio[i];
         }
     }
 
+    double suma = 0;
     for (int i = 0; i < NUM_HORAS; i++) {
-        double nuevoPrecio = gasto.consumo[i] * masBaratoPrecio;
-        if (masBaratoGasto > nuevoPrecio) {
-            masBaratoGasto = nuevoPrecio;
-        }
+        suma += gasto.consumo[i] * masBaratoPrecio;
     }
 
-    return masBaratoGasto;
+    return suma;
 
 }
+//He cambiado esta función porque pienso que lo que pide es el coste de todo un día
+//aplicado con el precio más barato de ese día, no el coste más barato del día.
