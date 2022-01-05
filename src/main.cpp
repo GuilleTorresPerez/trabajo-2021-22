@@ -113,12 +113,20 @@ int main() {
     string rutaArchivo;
     char usuario;
     unsigned mesInicial, mesFinal;
-
+    GastoDiario registro[999];
+    int numRegistro = 0;
 
     pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
 
+    string usuarioString(1, usuario);
+
+    while (leerConsumos(usuarioString, mesInicial, mesFinal, registro))
+    {
+        numRegistro++;
+    }
+
     if (rutaArchivo.empty()) {
-        // Escribir informe con ostream como cout
+        escribirInforme(cout, registro, numRegistro, usuario, mesInicial, mesFinal);
     } else {
 
         ofstream archivo;
@@ -130,9 +138,10 @@ int main() {
             return 0;
         }
 
-        // Escribir informe con ostream como archivo
-
+        escribirInforme(archivo, registro, numRegistro, usuario, mesInicial, mesFinal);
     }
+
+    
 
     return 0;
 }
