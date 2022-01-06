@@ -43,50 +43,32 @@ using namespace std;
 
 void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned numRegs, const char nombreCliente, const unsigned mesInicial, const unsigned mesFinal) {
 
-    f << "INFORME DEL CLIENTE '" << nombreCliente - 32 << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
-    f << "--------------------------------------------------------------------------------------------------------------------" << endl << endl;
+    f << "INFORME DEL CLIENTE \"" << nombreCliente - 32 << "\" ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
+    f << "-------------------------------------------------------------------------------------" << endl << endl;
 
-    double costeMinimo = 999;
-    unsigned index;
+// por qué nombreCliente - 32?? 
 
-    for (int i = 0; i < numRegs; i++) {
-        double nuevoCosteMinimo = costeDiarioMinimo(regDiarios[i]);
-        if ( costeMinimo > nuevoCosteMinimo) {
-            costeMinimo = nuevoCosteMinimo;
-            index = i;
-        }
-    }
-    
-    Fecha costeMinimoFecha = regDiarios[index].fecha;
-    double costeMed = costeMedio(regDiarios[index]);
+    double precioMedioMinimo = 0;
+    Fecha diaMin;
+
+    diaMasBarato(regDiarios, numRegs, diaMin, precioMedioMinimo);
 
     f << "El día completo más barato fue el "; 
-    mostrar(f, costeMinimoFecha); 
-    f << ". Precio medio: " << costeMed << " €/kwh" << endl;
+    mostrar(f, diaMin); 
+    f << ". Precio medio: " << precioMedioMinimo << " €/kwh" << endl;
     
-
     //////////////////////////
 
-
-    unsigned horaCara = 0;
-
-    for (int i = 0; i < numRegs; i++) {
-        unsigned nuevoHoraCara = horaMasCara(regDiarios[i]);
-        if (horaCara < nuevoHoraCara) {
-            horaCara = nuevoHoraCara;
-            index = i;
-        }
-    }
-
-    Fecha diaHoraCara = regDiarios[index].fecha;
+    Fecha diaMax;
+    unsigned horaMax;
+    double precioMax;
+    horaMasCara(regDiarios, numRegs, diaMax, horaMax, precioMax);
 
     f << "La hora más cara tuvo lugar el ";
-    mostrar(f, diaHoraCara); 
-    f << " a las " << horaCara << ":00. Precio: " << regDiarios[index].precio[horaCara] << " €/kwh" << endl << endl;
-
+    mostrar(f, diaMax); 
+    f << " a las " << horaMax << ":00. Precio: " << precioMax << " €/kwh" << endl << endl;
 
     ///////////////////////////////
-
 
     f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << "// importe" << " €." << endl;
     f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << "// importe mínimo conc." << " € (un " << "// porcentaje mejor" << " % menor)" << endl << endl;
