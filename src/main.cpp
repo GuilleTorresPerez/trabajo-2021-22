@@ -43,17 +43,6 @@ using namespace std;
 
 void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned numRegs, const char nombreCliente, const unsigned mesInicial, const unsigned mesFinal) {
 
-<<<<<<< Updated upstream
-    f << "INFORME DEL CLIENTE \"" << nombreCliente - 32 << "\" ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
-    f << "-------------------------------------------------------------------------------------" << endl << endl;
-
-// por qué nombreCliente - 32?? 
-
-    double precioMedioMinimo = 0;
-    Fecha diaMin;
-
-    diaMasBarato(regDiarios, numRegs, diaMin, precioMedioMinimo);
-=======
     char usuarioMayusucla = nombreCliente - 32;
 
     f << "INFORME DEL CLIENTE '" << usuarioMayusucla << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
@@ -63,29 +52,13 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     double costeMed;
 
     diaMasBarato(regDiarios, numRegs, costeMinimoFecha, costeMed);
->>>>>>> Stashed changes
 
     f << "El día completo más barato fue el "; 
-    mostrar(f, diaMin); 
-    f << ". Precio medio: " << precioMedioMinimo << " €/kwh" << endl;
+    mostrar(f, costeMinimoFecha); 
+    f << ". Precio medio: " << costeMed << " €/kwh" << endl;
     
     //////////////////////////
 
-<<<<<<< Updated upstream
-    Fecha diaMax;
-    unsigned horaMax;
-    double precioMax;
-    horaMasCara(regDiarios, numRegs, diaMax, horaMax, precioMax);
-
-    f << "La hora más cara tuvo lugar el ";
-    mostrar(f, diaMax); 
-    f << " a las " << horaMax << ":00. Precio: " << precioMax << " €/kwh" << endl << endl;
-
-    ///////////////////////////////
-
-    f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << "// importe" << " €." << endl;
-    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << "// importe mínimo conc." << " € (un " << "// porcentaje mejor" << " % menor)" << endl << endl;
-=======
 
     unsigned horaCara;
     double precioMasCaro;
@@ -106,7 +79,6 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << importeTotal << " €." << endl;
     f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << (-importeMinimo + importeTotal)/importeTotal << " % menor)" << endl << endl;
->>>>>>> Stashed changes
 
     f << "COSTE CON TARIFAS COMERCIALES" << endl;
     f << "Coste              Nombre de la tarifa" << endl;
