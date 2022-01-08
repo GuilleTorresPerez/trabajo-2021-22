@@ -1,26 +1,31 @@
 #include "gasto-diario.hpp"
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
 
 void diaMasBarato(const GastoDiario regsDiarios[], const unsigned numRegs, Fecha& dia, double& precioMedioMinimo) {
 
-    precioMedioMinimo = 999.0;
+    double precioMedio = 999.0;
     double aux;
     int index;
     
-    for (unsigned i = 1; i < numRegs; i++) {
+    for (unsigned i = 0; i < numRegs; i++) {
         aux = costeMedio(regsDiarios[i]);
-        if (precioMedioMinimo > aux) {
-            precioMedioMinimo = aux;
+        if (precioMedio > aux) {
+            precioMedio = aux;
             index = i;
         }
     }
 
     dia = regsDiarios[index].fecha;
+    precioMedioMinimo = precioMedio;
 
 }
 
 void horaMasCara(const GastoDiario regsDiarios[], const unsigned numRegs, Fecha& dia, unsigned& hora, double& precioMaximo) {
 
-    precioMaximo = 0;
+    precioMaximo = -999.0;
     double aux; 
 
     for (unsigned i = 0; i < numRegs; i++) {
@@ -28,6 +33,8 @@ void horaMasCara(const GastoDiario regsDiarios[], const unsigned numRegs, Fecha&
         aux = regsDiarios[i].precio[horaMasCara(regsDiarios[i])];
         if (precioMaximo < aux) {
             precioMaximo = aux;
+            dia.agno = regsDiarios[i].fecha.agno;
+            dia.mes = regsDiarios[i].fecha.mes;
             dia.dia = regsDiarios[i].fecha.dia;
             hora = horaMasCara(regsDiarios[i]);
         }     

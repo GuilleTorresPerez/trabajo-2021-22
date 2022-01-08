@@ -84,7 +84,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     f << "Coste              Nombre de la tarifa" << endl;
     f << "-----------------------------------------------" << endl;
     for (unsigned i = 0; i < NUM_TARIFAS_COMERCIALES; i++) {
-        f << setw(8) << "//coste tarifa" << setw(24) << TARIFAS_COMERCIALES[i].nombre;
+        f << setw(8) << "//coste tarifa  " << setw(24) << TARIFAS_COMERCIALES[i].nombre << endl;
     }
 
 }
@@ -98,12 +98,12 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
  * Post: Se han insertado los datos necesarios en las posibles variables y se ha detectado
  *       si se ha producido un error (como un intervalo de meses mal introducido, por ejemplo)
  */
-void pedirInformacion (char& usuario, unsigned& mesInicial, unsigned& mesFinal, string& rutaArchivo) {
+void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal, string& rutaArchivo) {
     
     bool fechaCorrecta = true;
 
     cout << "Escriba el nombre del usuario: ";
-    cin >> usuario;
+    getline(cin, usuario);
 
     do {
         cout << endl << "Escriba el mes inicial y el final: ";
@@ -131,6 +131,8 @@ void pedirInformacion (char& usuario, unsigned& mesInicial, unsigned& mesFinal, 
 
     cin >> rutaArchivo;
 
+    cout << endl;
+
 }
 
 /*
@@ -139,21 +141,22 @@ void pedirInformacion (char& usuario, unsigned& mesInicial, unsigned& mesFinal, 
 int main() {
 
     string rutaArchivo;
-    char usuario;
+    string usuario;
     unsigned mesInicial, mesFinal;
     GastoDiario registro[999];
     int numRegistro = 0;
 
-    pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
+    //pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
 
-    string usuarioString(1, usuario);
+    usuario = "a";
+    mesInicial = 1;
+    mesFinal = 11;
 
-    while (leerConsumos(usuarioString, mesInicial, mesFinal, registro))
-    {
-        numRegistro++;
-    }
+    leerConsumos(usuario, mesInicial, mesFinal, registro);
 
-    escribirInforme(cout, registro, numRegistro, usuario, mesInicial, mesFinal);
+    numRegistro = 334;
+
+    escribirInforme(cout, registro, numRegistro, usuario[0], mesInicial, mesFinal);
 
 /*
     if (rutaArchivo.empty()) {

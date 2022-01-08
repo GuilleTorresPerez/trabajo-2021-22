@@ -2,6 +2,7 @@
 
 
 #include <iostream>
+#include <iomanip>
 #include <stdlib.h>
 #include <fstream>
 #include <string>
@@ -123,8 +124,14 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
     string ignore;
     string fechaS, consumoS, horaS;
 
+    getline(f, ignore); // Avoid first line
+
     while(!f.eof()) {
         getline(f, ignore, ';');
+
+        if (ignore.empty()) {
+            return true;
+        }
         
         getline(f, fechaS, ';');
         getline(f, horaS, ';');
@@ -165,7 +172,7 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
  */
 bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const unsigned mesFinal, GastoDiario registros[]) {
     
-    if (nombreCliente != "a" || nombreCliente != "b") {
+    if (nombreCliente != "a" && nombreCliente != "b") {
         return false;
     }
 
@@ -173,9 +180,10 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
     unsigned horaAux = 0;
 
     string mesDatosRuta = RUTA_DATOS + nombreCliente + "-2021-";
+    string endString = ".csv";
 
     for (unsigned i = mesInicial; i < mesFinal; i++) {
-        
+
         ifstream archivo;
         string nuevoMesDatosRuta = mesDatosRuta;
 
@@ -183,7 +191,7 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
             nuevoMesDatosRuta = mesDatosRuta + "0";
         }
 
-        nuevoMesDatosRuta = nuevoMesDatosRuta + to_string(i);
+        nuevoMesDatosRuta = nuevoMesDatosRuta + to_string(i) + endString;
 
         archivo.open(nuevoMesDatosRuta, ios::in);
 
