@@ -87,10 +87,8 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
     unsigned horaAux;
     double precioAux;
 
-    unsigned index = 0;
-
-    for (int i = 0; i < MAX_DIAS; i++) {
-        for (int j = 0; j < NUM_HORAS; j++) {
+    for (unsigned i = 0; i < MAX_DIAS; i++) {
+        for (unsigned j = 0; j < NUM_HORAS; j++) {
             if (leerPrecioHorario(archivo, aux.fecha, horaAux, precioAux)) {
                 if (aux.fecha.mes >= mesInicial && aux.fecha.mes <= mesFinal) {
                     registros[i].fecha = aux.fecha;
@@ -176,7 +174,7 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
 
     string mesDatosRuta = RUTA_DATOS + nombreCliente + "-2021-";
 
-    for (int i = mesInicial; i < mesFinal; i++) {
+    for (unsigned i = mesInicial; i < mesFinal; i++) {
         
         ifstream archivo;
         string nuevoMesDatosRuta = mesDatosRuta;

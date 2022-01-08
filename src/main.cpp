@@ -43,6 +43,7 @@ using namespace std;
 
 void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned numRegs, const char nombreCliente, const unsigned mesInicial, const unsigned mesFinal) {
 
+<<<<<<< Updated upstream
     f << "INFORME DEL CLIENTE \"" << nombreCliente - 32 << "\" ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
     f << "-------------------------------------------------------------------------------------" << endl << endl;
 
@@ -52,6 +53,17 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     Fecha diaMin;
 
     diaMasBarato(regDiarios, numRegs, diaMin, precioMedioMinimo);
+=======
+    char usuarioMayusucla = nombreCliente - 32;
+
+    f << "INFORME DEL CLIENTE '" << usuarioMayusucla << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
+    f << "--------------------------------------------------------------------------------------------------------------------" << endl << endl;
+
+    Fecha costeMinimoFecha;
+    double costeMed;
+
+    diaMasBarato(regDiarios, numRegs, costeMinimoFecha, costeMed);
+>>>>>>> Stashed changes
 
     f << "El día completo más barato fue el "; 
     mostrar(f, diaMin); 
@@ -59,6 +71,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     
     //////////////////////////
 
+<<<<<<< Updated upstream
     Fecha diaMax;
     unsigned horaMax;
     double precioMax;
@@ -72,12 +85,34 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << "// importe" << " €." << endl;
     f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << "// importe mínimo conc." << " € (un " << "// porcentaje mejor" << " % menor)" << endl << endl;
+=======
+
+    unsigned horaCara;
+    double precioMasCaro;
+
+    Fecha diaHoraCara;
+
+    horaMasCara(regDiarios, numRegs, diaHoraCara, horaCara, precioMasCaro);
+
+    f << "La hora más cara tuvo lugar el ";
+    mostrar(f, diaHoraCara); 
+    f << " a las " << horaCara << ":00. Precio: " << precioMasCaro << " €/kwh" << endl << endl;
+
+
+    ///////////////////////////////
+
+    double importeTotal = costeTerminoVariable(regDiarios, numRegs);
+    double importeMinimo = costeMinimoPosible(regDiarios, numRegs);
+
+    f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << importeTotal << " €." << endl;
+    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << (-importeMinimo + importeTotal)/importeTotal << " % menor)" << endl << endl;
+>>>>>>> Stashed changes
 
     f << "COSTE CON TARIFAS COMERCIALES" << endl;
     f << "Coste              Nombre de la tarifa" << endl;
     f << "-----------------------------------------------" << endl;
-    for (int i = 0; i < NUM_TARIFAS_COMERCIALES; i++) {
-        f << setw(8) << "// coste con tarifa" << setw(24) << TARIFAS_COMERCIALES[i].nombre;
+    for (unsigned i = 0; i < NUM_TARIFAS_COMERCIALES; i++) {
+        f << setw(8) << "//coste tarifa" << setw(24) << TARIFAS_COMERCIALES[i].nombre;
     }
 
 }
@@ -146,8 +181,10 @@ int main() {
         numRegistro++;
     }
 
+    escribirInforme(cout, registro, numRegistro, usuario, mesInicial, mesFinal);
+
+/*
     if (rutaArchivo.empty()) {
-        escribirInforme(cout, registro, numRegistro, usuario, mesInicial, mesFinal);
     } else {
 
         ofstream archivo;
@@ -163,6 +200,6 @@ int main() {
     }
 
     
-
+*/
     return 0;
 }

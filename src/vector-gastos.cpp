@@ -1,27 +1,31 @@
 #include "gasto-diario.hpp"
 
-void diaMasBarato(const GastoDiario regsDiarios[], const unsigned numRegs,
-                  Fecha& dia, double& precioMedioMinimo) {
-    GastoDiario menorPrecio = regsDiarios[0];
+void diaMasBarato(const GastoDiario regsDiarios[], const unsigned numRegs, Fecha& dia, double& precioMedioMinimo) {
+
+    precioMedioMinimo = 999.0;
+    double aux;
+    int index;
     
-    for (int i = 1; i < numRegs; i++) {
-        if (costeMedio(menorPrecio) > costeMedio(regsDiarios[i])) {
-            menorPrecio = regsDiarios[i];
+    for (unsigned i = 1; i < numRegs; i++) {
+        aux = costeMedio(regsDiarios[i]);
+        if (precioMedioMinimo > aux) {
+            precioMedioMinimo = aux;
+            index = i;
         }
     }
-    dia.dia = menorPrecio.fecha.dia;
-    precioMedioMinimo = costeMedio(menorPrecio);
+
+    dia = regsDiarios[index].fecha;
+
 }
 
-void horaMasCara(const GastoDiario regsDiarios[], const unsigned numRegs, 
-                 Fecha& dia, unsigned& hora, double& precioMaximo) {
-    unsigned hora = horaMasCara(regsDiarios[0]);
-    double precioMaximo = regsDiarios[0].precio[0];
+void horaMasCara(const GastoDiario regsDiarios[], const unsigned numRegs, Fecha& dia, unsigned& hora, double& precioMaximo) {
 
+    precioMaximo = 0;
     double aux; 
-    for (int i = 0; i < numRegs; i++) {
-        aux = regsDiarios[i].precio[horaMasCara(regsDiarios[i])];
 
+    for (unsigned i = 0; i < numRegs; i++) {
+
+        aux = regsDiarios[i].precio[horaMasCara(regsDiarios[i])];
         if (precioMaximo < aux) {
             precioMaximo = aux;
             dia.dia = regsDiarios[i].fecha.dia;
@@ -30,8 +34,7 @@ void horaMasCara(const GastoDiario regsDiarios[], const unsigned numRegs,
     }
 }
 
-double costeTerminoVaraiable(const GastoDiario regsDiarios[], 
-                           const unsigned numRegs) {
+double costeTerminoVariable(const GastoDiario regsDiarios[], const unsigned numRegs) {
     double suma = 0;
     for (unsigned i = 0; i < numRegs; i++) {
         suma += costeDiario(regsDiarios[i]);
@@ -41,10 +44,10 @@ double costeTerminoVaraiable(const GastoDiario regsDiarios[],
 
 //Supongo que se refiere al coste total de todos los componentes de regsDiarios 
 
-double costeMinimoPosible(const GastoDiario regsDiarios[] , 
-                          const unsigned numRegs) {
+double costeMinimoPosible(const GastoDiario regsDiarios[], const unsigned numRegs) {
     double suma = 0;
     for (unsigned i = 0; i < numRegs; i++) {
         suma += costeDiarioMinimo(regsDiarios[i]);
     }
+    return suma;
 }

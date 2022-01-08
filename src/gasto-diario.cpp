@@ -35,7 +35,7 @@ double costeMedio(const GastoDiario& gasto) {
     
     double suma = 0;
 
-    for (int i = 0; i < NUM_HORAS; i++) {
+    for (unsigned i = 0; i < NUM_HORAS; i++) {
         suma += gasto.precio[i];
     }
 
@@ -54,7 +54,7 @@ double costeDiario(const GastoDiario& gasto) {
     
     double suma = 0;
 
-    for (int i = 0; i < NUM_HORAS; i++) {
+    for (unsigned i = 0; i < NUM_HORAS; i++) {
         suma += gasto.precio[i] * gasto.consumo[i];
     }
 
@@ -72,14 +72,14 @@ double costeDiario(const GastoDiario& gasto) {
 double costeDiarioMinimo(const GastoDiario& gasto) {
     
     double masBaratoPrecio = gasto.precio[0];
-    for (int i = 1; i < NUM_HORAS; i++) {
+    for (unsigned i = 1; i < NUM_HORAS; i++) {
         if (masBaratoPrecio > gasto.precio[i]) {
             masBaratoPrecio = gasto.precio[i];
         }
     }
 
     double suma = 0;
-    for (int i = 0; i < NUM_HORAS; i++) {
+    for (unsigned i = 0; i < NUM_HORAS; i++) {
         suma += gasto.consumo[i] * masBaratoPrecio;
     }
 

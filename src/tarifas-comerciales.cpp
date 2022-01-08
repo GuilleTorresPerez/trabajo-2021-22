@@ -9,7 +9,7 @@ double costeDiarioTarifaPlanaTramos(const GastoDiario& gasto, const TarifaPlanaT
     for (unsigned i = 0; i < NUM_HORAS; i++) {
         if ((i >= 10 && i < 14) || (i >= 18 && i < 22)) {
             suma += gasto.consumo[i] * tarifa.punta;
-        } else if ((i >= 8 && i < 10) || (i >= 14 && i < 18) || (i >= 22 && i < 0)) {
+        } else if ((i >= 8 && i < 10) || (i >= 14 && i < 18) || i >= 22) {
             suma += gasto.consumo[i] * tarifa.llano;
         } else {
             suma += gasto.consumo[i] * tarifa.valle;
