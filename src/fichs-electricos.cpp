@@ -47,7 +47,7 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
         
         getline(f, fechaS);
 
-        fecha.agno = stoi(fechaS.substr(0, 3));
+        fecha.agno = stoi(fechaS.substr(0, 10));
         fecha.mes = stoi(fechaS.substr(5,6));
         fecha.dia = stoi(fechaS.substr(8,9));
 
@@ -151,7 +151,7 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
         hora = stoi(horaS);
 
         if (hora == 1) {
-            fecha.agno = stoi(fechaS.substr(6, 9));
+            fecha.agno = stoi(fechaS.substr(6, 10));
             fecha.mes = stoi(fechaS.substr(3,4));
             fecha.dia = stoi(fechaS.substr(0,1));
         }

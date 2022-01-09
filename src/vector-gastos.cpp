@@ -42,11 +42,15 @@ void horaMasCara(const GastoDiario regsDiarios[], const unsigned numRegs, Fecha&
 }
 
 double costeTerminoVariable(const GastoDiario regsDiarios[], const unsigned numRegs) {
+    
     double suma = 0;
+
     for (unsigned i = 0; i < numRegs; i++) {
         suma += costeDiario(regsDiarios[i]);
     }
+
     return suma;
+
 }
 
 //Supongo que se refiere al coste total de todos los componentes de regsDiarios 

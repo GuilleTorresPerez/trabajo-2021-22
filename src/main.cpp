@@ -55,7 +55,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     f << "El día completo más barato fue el "; 
     mostrar(f, costeMinimoFecha); 
-    f << ". Precio medio: " << costeMed << " €/kwh" << endl;
+    f << ". Precio medio: " << costeMed / 1000 << " €/kwh" << endl;
     
     //////////////////////////
 
@@ -69,7 +69,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     f << "La hora más cara tuvo lugar el ";
     mostrar(f, diaHoraCara); 
-    f << " a las " << horaCara << ":00. Precio: " << precioMasCaro << " €/kwh" << endl << endl;
+    f << " a las " << horaCara << ":00. Precio: " << precioMasCaro / 1000 << " €/kwh" << endl << endl;
 
 
     ///////////////////////////////
@@ -78,13 +78,13 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     double importeMinimo = costeMinimoPosible(regDiarios, numRegs);
 
     f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << importeTotal << " €." << endl;
-    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << (-importeMinimo + importeTotal)/importeTotal << " % menor)" << endl << endl;
+    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << (importeMinimo / importeTotal) * 100 << " % menor)" << endl << endl;
 
     f << "COSTE CON TARIFAS COMERCIALES" << endl;
-    f << "Coste              Nombre de la tarifa" << endl;
+    f << "   Coste           Nombre de la tarifa" << endl;
     f << "-----------------------------------------------" << endl;
     for (unsigned i = 0; i < NUM_TARIFAS_COMERCIALES; i++) {
-        f << setw(8) << "//coste tarifa  " << setw(24) << TARIFAS_COMERCIALES[i].nombre << endl;
+        f << setw(10) << costeTarifaPlanaTramos(regDiarios, numRegs, TARIFAS_COMERCIALES[i]) << " €      " << TARIFAS_COMERCIALES[i].nombre << endl;
     }
 
 }
