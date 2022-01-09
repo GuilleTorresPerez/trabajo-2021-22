@@ -143,16 +143,21 @@ int main() {
     string rutaArchivo;
     string usuario;
     unsigned mesInicial, mesFinal;
-    GastoDiario registro[999];
+    GastoDiario registro[MAX_DIAS];
     int numRegistro = 0;
 
     //pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
 
+    // Información automática, no hay que pedirlo cada vez
     usuario = "a";
     mesInicial = 1;
     mesFinal = 11;
 
     leerConsumos(usuario, mesInicial, mesFinal, registro);
+
+    const string nombreFicheroTarifas = "datos/tarifas-2021-ene-nov.csv";
+
+    if (leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro));
 
     numRegistro = 334;
 

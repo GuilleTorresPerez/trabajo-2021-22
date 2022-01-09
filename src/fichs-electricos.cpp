@@ -34,6 +34,11 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
 
     while(!f.eof()) {
         getline(f, ignore, ';');
+
+        if (ignore.empty()) { // Evitar la última línea en blanco
+            return false;
+        }
+
         getline(f, ignore, ';');
         getline(f, ignore, ';');
         getline(f, ignore, ';');
@@ -84,6 +89,10 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
         return false;
     }
 
+    string ignore;
+
+    getline(archivo, ignore);
+
     GastoDiario aux;
     unsigned horaAux;
     double precioAux;
@@ -92,7 +101,9 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
         for (unsigned j = 0; j < NUM_HORAS; j++) {
             if (leerPrecioHorario(archivo, aux.fecha, horaAux, precioAux)) {
                 if (aux.fecha.mes >= mesInicial && aux.fecha.mes <= mesFinal) {
-                    registros[i].fecha = aux.fecha;
+                    registros[i].fecha.agno = aux.fecha.agno;
+                    registros[i].fecha.mes = aux.fecha.mes;
+                    registros[i].fecha.dia = aux.fecha.dia;
                     registros[i].precio[j] = precioAux;
                 }
             }
@@ -124,13 +135,11 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
     string ignore;
     string fechaS, consumoS, horaS;
 
-    getline(f, ignore); // Avoid first line
-
     while(!f.eof()) {
         getline(f, ignore, ';');
 
-        if (ignore.empty()) {
-            return true;
+        if (ignore.empty()) { // Evita la ultima línea del archivo (línea en el archivo)
+            return false;
         }
         
         getline(f, fechaS, ';');
@@ -139,12 +148,14 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
 
         getline(f, ignore);
 
-        fecha.agno = stoi(fechaS.substr(6, 9));
-        fecha.mes = stoi(fechaS.substr(3,4));
-        fecha.dia = stoi(fechaS.substr(0,1));
-
         hora = stoi(horaS);
 
+        if (hora == 1) {
+            fecha.agno = stoi(fechaS.substr(6, 9));
+            fecha.mes = stoi(fechaS.substr(3,4));
+            fecha.dia = stoi(fechaS.substr(0,1));
+        }
+        
         consumo = stod(consumoS);
 
         return true;
@@ -176,13 +187,16 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
         return false;
     }
 
-    int totalIndex = 0;
-    unsigned horaAux = 0;
+    int totalIndex;
+    unsigned horaAux;
 
     string mesDatosRuta = RUTA_DATOS + nombreCliente + "-2021-";
-    string endString = ".csv";
+    string ignore;
 
     for (unsigned i = mesInicial; i < mesFinal; i++) {
+
+        totalIndex = 0;
+        horaAux = 0;
 
         ifstream archivo;
         string nuevoMesDatosRuta = mesDatosRuta;
@@ -191,7 +205,7 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
             nuevoMesDatosRuta = mesDatosRuta + "0";
         }
 
-        nuevoMesDatosRuta = nuevoMesDatosRuta + to_string(i) + endString;
+        nuevoMesDatosRuta = nuevoMesDatosRuta + to_string(i) + ".csv";
 
         archivo.open(nuevoMesDatosRuta, ios::in);
 
@@ -200,11 +214,14 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
             return false;
         }
 
-        while(leerConsumoHorario(archivo, registros[totalIndex].fecha, horaAux, registros[totalIndex].consumo[horaAux])) {
-            horaAux++;
-        }
+        getline(archivo, ignore); // Evitar primera linea del archivo
 
-        totalIndex++;
+        while(leerConsumoHorario(archivo, registros[totalIndex].fecha, horaAux, registros[totalIndex].consumo[horaAux])) {
+            if (horaAux == 24) {
+                totalIndex++;
+
+            }
+        }
 
     }
 
