@@ -157,7 +157,7 @@ int main() {
 
     const string nombreFicheroTarifas = "datos/tarifas-2021-ene-nov.csv";
 
-    if (leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro));
+    leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro);
 
     numRegistro = 334;
 
