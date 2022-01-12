@@ -8,7 +8,7 @@ void diaMasBarato(const GastoDiario regsDiarios[], const unsigned numRegs, Fecha
 
     double precioMedio = costeMedio(regsDiarios[0]);
     double aux; // Variable auxiliar para comparar precios
-    int index; // Variable auxiliar para indicar que dia tiene el precio más bajo
+    int index = 0; // Variable auxiliar para indicar que dia tiene el precio más bajo
     
     for (unsigned i = 1; i < numRegs; i++) {
         

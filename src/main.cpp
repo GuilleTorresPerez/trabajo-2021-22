@@ -161,10 +161,10 @@ int main() {
     // Información automática, no hay que pedirlo cada vez
     usuario = "a";
     mesInicial = 1;
-    mesFinal = 11;
+    mesFinal = 5;
 
     // Si hay algun fallo leyendo los archivos el programa finaliza.
-    if (leerConsumos(usuario, mesInicial, mesFinal, registro)) {
+    if (!leerConsumos(usuario, mesInicial, mesFinal, registro)) {
         return 1;
     }
 
