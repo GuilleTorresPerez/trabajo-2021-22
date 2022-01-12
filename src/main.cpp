@@ -48,7 +48,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     f << "INFORME DEL CLIENTE '" << usuarioMayusucla << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
     f << "--------------------------------------------------------------------------------------------------------------------" << endl << endl;
 
-    cout << fixed << setprecision(2);
+    cout << fixed << setprecision(5);
 
     Fecha costeMinimoFecha;
     double costeMed;
@@ -66,6 +66,8 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     double precioMasCaro;
 
     Fecha diaHoraCara;
+
+    cout << setprecision(2);
 
     horaMasCara(regDiarios, numRegs, diaHoraCara, horaCara, precioMasCaro);
 
@@ -164,7 +166,6 @@ int main() {
     numRegistro = 334;
 
     escribirInforme(cout, registro, numRegistro, usuario[0], mesInicial, mesFinal);
-
     
 /*
     for (int i = 0; i < numRegistro*24 / 10; i++) {

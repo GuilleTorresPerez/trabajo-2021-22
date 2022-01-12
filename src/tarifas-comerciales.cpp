@@ -20,7 +20,7 @@ double costeDiarioTarifaPlanaTramos(const GastoDiario& gasto, const TarifaPlanaT
 
 double costeTarifaPlanaTramos(const GastoDiario regDiario[], const unsigned numRegs, const TarifaPlanaTramos tarifa) {
     double suma = 0;
-    for (unsigned i = 0; i < numRegs; i++) {
+    for (unsigned i = 0; i < numRegs-1; i++) {
         suma += costeDiarioTarifaPlanaTramos(regDiario[i], tarifa);
     }
     return suma;

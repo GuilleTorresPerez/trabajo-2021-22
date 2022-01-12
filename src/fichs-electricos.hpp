@@ -14,7 +14,6 @@ using namespace std;
 
 const string RUTA_DATOS = "datos/";
 
-
 /*
  * Pre:  «f» está asociado con un fichero externo que cumple con la sintaxis de
  *       la regla <fichero-precios> establecida en el enunciado y está en

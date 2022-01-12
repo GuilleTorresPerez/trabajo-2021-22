@@ -97,20 +97,26 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
     unsigned horaAux;
     double precioAux;
 
+    int offset = 151;
+
     for (unsigned i = 0; i < MAX_DIAS; i++) {
         for (unsigned j = 0; j < NUM_HORAS; j++) {
             if (leerPrecioHorario(archivo, aux.fecha, horaAux, precioAux)) {
                 if (aux.fecha.mes >= mesInicial && aux.fecha.mes <= mesFinal) {
-                    registros[i].fecha.agno = aux.fecha.agno;
-                    registros[i].fecha.mes = aux.fecha.mes;
-                    registros[i].fecha.dia = aux.fecha.dia;
-                    registros[i].precio[j] = precioAux;
+                    
+                    if (aux.fecha.mes < 5) {
+                        offset = -183;
+                    }
+                    
+                    registros[i+offset].fecha.agno = aux.fecha.agno;
+                    registros[i+offset].fecha.mes = aux.fecha.mes;
+                    registros[i+offset].fecha.dia = aux.fecha.dia;
+                    registros[i+offset].precio[j] = precioAux;
+
                 }
             }
         }
     }
-
-    // TODO: Esto es una pedazo de chapuza, si encuentras una mejor manera de hacer esto arreglalo :)
 
     return true;
 
