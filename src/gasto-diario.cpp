@@ -55,7 +55,7 @@ double costeDiario(const GastoDiario& gasto) {
     double suma = 0;
 
     for (unsigned i = 0; i < NUM_HORAS; i++) {
-        suma += gasto.precio[i] * gasto.consumo[i];
+        suma += gasto.precio[i] * gasto.consumo[i] / 1000;
     }
 
     return suma;
@@ -80,7 +80,7 @@ double costeDiarioMinimo(const GastoDiario& gasto) {
 
     double suma = 0;
     for (unsigned i = 0; i < NUM_HORAS; i++) {
-        suma += gasto.consumo[i] * masBaratoPrecio;
+        suma += gasto.consumo[i] * masBaratoPrecio / 1000;
     }
 
     return suma;

@@ -149,13 +149,13 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
         getline(f, ignore);
 
         hora = stoi(horaS);
-
-        if (hora == 1) {
+        /*  
+        if (hora == 1) { // Asignar nueva fecha
             fecha.agno = stoi(fechaS.substr(6, 10));
             fecha.mes = stoi(fechaS.substr(3,4));
             fecha.dia = stoi(fechaS.substr(0,1));
         }
-        
+        */  
         consumo = stod(consumoS);
 
         return true;
@@ -187,15 +187,14 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
         return false;
     }
 
-    int totalIndex;
+    unsigned totalIndex = 0;
     unsigned horaAux;
 
     string mesDatosRuta = RUTA_DATOS + nombreCliente + "-2021-";
     string ignore;
 
-    for (unsigned i = mesInicial; i < mesFinal; i++) {
+    for (unsigned i = mesInicial; i < mesFinal+1; i++) {
 
-        totalIndex = 0;
         horaAux = 0;
 
         ifstream archivo;
@@ -216,12 +215,18 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
 
         getline(archivo, ignore); // Evitar primera linea del archivo
 
-        while(leerConsumoHorario(archivo, registros[totalIndex].fecha, horaAux, registros[totalIndex].consumo[horaAux])) {
+        double auxiliar;
+
+        while(leerConsumoHorario(archivo, registros[totalIndex].fecha, horaAux, auxiliar)) {
+
+            registros[totalIndex].consumo[horaAux-1] = auxiliar;
+
             if (horaAux == 24) {
                 totalIndex++;
-
             }
         }
+
+        archivo.close();
 
     }
 

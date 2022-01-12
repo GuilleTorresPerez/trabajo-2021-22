@@ -48,6 +48,8 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     f << "INFORME DEL CLIENTE '" << usuarioMayusucla << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
     f << "--------------------------------------------------------------------------------------------------------------------" << endl << endl;
 
+    cout << fixed << setprecision(2);
+
     Fecha costeMinimoFecha;
     double costeMed;
 
@@ -78,7 +80,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     double importeMinimo = costeMinimoPosible(regDiarios, numRegs);
 
     f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << importeTotal << " €." << endl;
-    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << (importeMinimo / importeTotal) * 100 << " % menor)" << endl << endl;
+    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << (1- (importeMinimo / importeTotal)) * 100 << " % menor)" << endl << endl;
 
     f << "COSTE CON TARIFAS COMERCIALES" << endl;
     f << "   Coste           Nombre de la tarifa" << endl;
@@ -162,6 +164,19 @@ int main() {
     numRegistro = 334;
 
     escribirInforme(cout, registro, numRegistro, usuario[0], mesInicial, mesFinal);
+
+    
+/*
+    for (int i = 0; i < numRegistro*24 / 10; i++) {
+        cout << endl << registro[i/24].consumo[i % 24] << "  dia: " << i / 24 << "    hora: " << i%24;
+    }*/
+
+/*
+    for (int i = 0; i < 10; i++) {
+        cout << endl << registro[0].consumo[i] << "   " << registro[0].precio[i] << endl;
+    }*/
+
+    
 
 /*
     if (rutaArchivo.empty()) {
