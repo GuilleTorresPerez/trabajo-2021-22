@@ -67,7 +67,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     Fecha diaHoraCara;
 
-    cout << setprecision(2);
+    //cout << setprecision(2);
 
     horaMasCara(regDiarios, numRegs, diaHoraCara, horaCara, precioMasCaro);
 
@@ -163,21 +163,12 @@ int main() {
 
     leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro);
 
-    numRegistro = 334;
+    Fecha primerDia = {1, mesInicial, 2021};
+    Fecha ultimoDia = {31, mesFinal, 2021};
+
+    numRegistro = diasTranscurridos(primerDia, ultimoDia);
 
     escribirInforme(cout, registro, numRegistro, usuario[0], mesInicial, mesFinal);
-    
-/*
-    for (int i = 0; i < numRegistro*24 / 10; i++) {
-        cout << endl << registro[i/24].consumo[i % 24] << "  dia: " << i / 24 << "    hora: " << i%24;
-    }*/
-
-/*
-    for (int i = 0; i < 10; i++) {
-        cout << endl << registro[0].consumo[i] << "   " << registro[0].precio[i] << endl;
-    }*/
-
-    
 
 /*
     if (rutaArchivo.empty()) {

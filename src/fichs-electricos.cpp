@@ -97,21 +97,20 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
     unsigned horaAux;
     double precioAux;
 
-    int offset = 151;
+    Fecha primerDia = {1, 1, 2021};
+    Fecha primerMes = {1, mesInicial, 2021};
 
     for (unsigned i = 0; i < MAX_DIAS; i++) {
         for (unsigned j = 0; j < NUM_HORAS; j++) {
             if (leerPrecioHorario(archivo, aux.fecha, horaAux, precioAux)) {
                 if (aux.fecha.mes >= mesInicial && aux.fecha.mes <= mesFinal) {
                     
-                    if (aux.fecha.mes < 5) {
-                        offset = -183;
-                    }
-                    
-                    registros[i+offset].fecha.agno = aux.fecha.agno;
-                    registros[i+offset].fecha.mes = aux.fecha.mes;
-                    registros[i+offset].fecha.dia = aux.fecha.dia;
-                    registros[i+offset].precio[j] = precioAux;
+                    int index = diasTranscurridos(primerDia, aux.fecha) - diasTranscurridos(primerDia, primerMes);
+
+                    registros[index].fecha.agno = aux.fecha.agno;
+                    registros[index].fecha.mes = aux.fecha.mes;
+                    registros[index].fecha.dia = aux.fecha.dia;
+                    registros[index].precio[j] = precioAux;
 
                 }
             }
@@ -155,13 +154,6 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
         getline(f, ignore);
 
         hora = stoi(horaS);
-        /*  
-        if (hora == 1) { // Asignar nueva fecha
-            fecha.agno = stoi(fechaS.substr(6, 10));
-            fecha.mes = stoi(fechaS.substr(3,4));
-            fecha.dia = stoi(fechaS.substr(0,1));
-        }
-        */  
         consumo = stod(consumoS);
 
         return true;
