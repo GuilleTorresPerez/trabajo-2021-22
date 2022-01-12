@@ -50,6 +50,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     cout << fixed << setprecision(5);
 
+    // Calculo del dia mas barato entre los meses introducidos
     Fecha costeMinimoFecha;
     double costeMed;
 
@@ -59,15 +60,14 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     mostrar(f, costeMinimoFecha); 
     f << ". Precio medio: " << costeMed / 1000 << " €/kwh" << endl;
     
-    //////////////////////////
 
-
+    // Calculo de la hora, junto con precio, mas cara entre los meses introducidos
     unsigned horaCara;
     double precioMasCaro;
 
     Fecha diaHoraCara;
 
-    //cout << setprecision(2);
+    cout << setprecision(2);
 
     horaMasCara(regDiarios, numRegs, diaHoraCara, horaCara, precioMasCaro);
 
@@ -76,19 +76,22 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     f << " a las " << horaCara << ":00. Precio: " << precioMasCaro / 1000 << " €/kwh" << endl << endl;
 
 
-    ///////////////////////////////
-
+    // Calculo del importe minimo y total, así como del porcentaje de diferencia entre los dos
     double importeTotal = costeTerminoVariable(regDiarios, numRegs);
     double importeMinimo = costeMinimoPosible(regDiarios, numRegs);
+    double porcentajeDiferencia = (1- (importeMinimo / importeTotal)) * 100;
 
     f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << importeTotal << " €." << endl;
-    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << (1- (importeMinimo / importeTotal)) * 100 << " % menor)" << endl << endl;
+    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << porcentajeDiferencia << " % menor)" << endl << endl;
 
+
+
+    // Calculo del precio del consumo aplicando las tarifas respectivas
     f << "COSTE CON TARIFAS COMERCIALES" << endl;
     f << "   Coste           Nombre de la tarifa" << endl;
     f << "-----------------------------------------------" << endl;
     for (unsigned i = 0; i < NUM_TARIFAS_COMERCIALES; i++) {
-        f << setw(10) << costeTarifaPlanaTramos(regDiarios, numRegs, TARIFAS_COMERCIALES[i]) << " €      " << TARIFAS_COMERCIALES[i].nombre << endl;
+        f << setw(10) << costeTarifaPlanaTramos(regDiarios, numRegs, TARIFAS_COMERCIALES[i]) << " €       " << TARIFAS_COMERCIALES[i].nombre << endl;
     }
 
 }
@@ -104,7 +107,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
  */
 void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal, string& rutaArchivo) {
     
-    bool fechaCorrecta = true;
+    bool fechaCorrecta; // Variable auxiliar para verificar que los datos introducidos son correctos
 
     cout << "Escriba el nombre del usuario: ";
     getline(cin, usuario);
@@ -140,7 +143,9 @@ void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal
 }
 
 /*
- * ¡ESCRIBID LA ESPECIFICACIÓN DE ESTA FUNCIÓN!
+ * Función principal del programa. Se inicializan las variables necesarias para el programa en pedirInformacion
+ * para posteriormente leer los datos necesarios de los ficheros en leerConsumos y leerPrecios.
+ * Por último, se operan con dichos datos y se escribe en pantalla o en un archivo especificado los datos que se buscan.
  */
 int main() {
 
@@ -149,6 +154,7 @@ int main() {
     unsigned mesInicial, mesFinal;
     GastoDiario registro[MAX_DIAS];
     int numRegistro = 0;
+    const string nombreFicheroTarifas = "datos/tarifas-2021-ene-nov.csv";
 
     //pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
 
@@ -157,12 +163,16 @@ int main() {
     mesInicial = 1;
     mesFinal = 11;
 
-    leerConsumos(usuario, mesInicial, mesFinal, registro);
+    // Si hay algun fallo leyendo los archivos el programa finaliza.
+    if (leerConsumos(usuario, mesInicial, mesFinal, registro)) {
+        return 1;
+    }
 
-    const string nombreFicheroTarifas = "datos/tarifas-2021-ene-nov.csv";
+    if (!leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro)){
+        return 1;
+    }
 
-    leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro);
-
+    // Calculo del total de dias con datos que hay en el registro
     Fecha primerDia = {1, mesInicial, 2021};
     Fecha ultimoDia = {31, mesFinal, 2021};
 
@@ -172,6 +182,9 @@ int main() {
 
 /*
     if (rutaArchivo.empty()) {
+
+        escribirInforme(cout, registro, numRegistro, usuario[0], mesInicial, mesFinal);
+
     } else {
 
         ofstream archivo;
@@ -179,7 +192,7 @@ int main() {
         archivo.open(rutaArchivo, ios::out);
 
         if (archivo.fail()) {
-            cout << "No se ha podido crear el archivo " << rutaArchivo << endl;
+            cout << "No se ha podido crear el archivo." << rutaArchivo << endl;
             return 0;
         }
 

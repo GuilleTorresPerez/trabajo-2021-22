@@ -1,11 +1,7 @@
 
-
-
 #include <iostream>
-#include <iomanip>
 #include <stdlib.h>
 #include <fstream>
-#include <string>
 
 #include "fecha.hpp"
 #include "gasto-diario.hpp"
@@ -13,20 +9,7 @@
 
 using namespace std;
 
-/*
- * Pre:  «f» está asociado con un fichero externo que cumple con la sintaxis de
- *       la regla <fichero-precios> establecida en el enunciado y está en
- *       disposición de leer desde el principio de una línea que cumple con la
- *       regla <precio-horario>.
- * Post: Ha extraido de «f» la línea a la que hacía referencia la precondición
- *       y ha asignado a los parámetros «fecha», «hora» y «precio»,
- *       respectivamente, los datos sobre la fecha, hora y precio horario
- *       correspondientes a la línea que se ha extraído del flujo «f».
- *       El flujo «f» continua asociado con el fichero externo y en disposición
- *       de extraer datos a partir de la siguiente línea.
- *       La función ha devuelto «true» si no se han terminado los datos del
- *       fichero en el intento de lectura y «false» en caso contrario.
- */
+
 bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio) {
 
     string ignore;
@@ -35,7 +18,7 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
     while(!f.eof()) {
         getline(f, ignore, ';');
 
-        if (ignore.empty()) { // Evitar la última línea en blanco
+        if (ignore.empty()) { // Evita la ultima línea del archivo (línea vacía)
             return false;
         }
 
@@ -63,21 +46,7 @@ bool leerPrecioHorario(istream& f, Fecha& fecha, unsigned& hora, double& precio)
 
 }
 
-/*
- * Pre:  «nombreFichero» es el nombre de un fichero externo que cumple con la
- *       sintaxis de la regla <fichero-precios> establecida en el enunciado; 
- *       «mesInicial» y «mesFinal» están ambos entre «PRIMER_MES» y «ULTIMO_MES»
- *       y mesInicial < mesFinal.
- * Post: Ha copiado los datos de precios horarios correspondientes a fechas 
- *       entre «mesInicial» y «mesFinal» presentes en «nombreFichero» en las 
- *       componentes correspondientes a la hora del precio del campo «precios»
- *       en las primeras componentes del vector «registros», cuyos campos
- *       «fecha» se han actualizado y han quedado en orden cronológico (tal y
- *       como aparecían en el fichero). LOS DATOS DEL VECTOR CORRESPONDIENTE AL
- *       CAMPO «CONSUMO» NO SE HAN MODIFICADO.
- *       La función ha devuelto «true» si ha podido leer del fichero de nombre 
- *       «nombreFichero» correctamente, y «false» en caso contrario.
- */
+
 bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const unsigned mesFinal, GastoDiario registros[]) {
     
     ifstream archivo;
@@ -85,32 +54,29 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
     archivo.open(nombreFichero, ios::in);
 
     if (archivo.fail()) {
-        cout << "No se ha podido leer el archivo con la ruta especificada." << endl;
+        cout << "No se ha podido leer el archivo con la ruta especificada (tarifas)." << endl;
         return false;
     }
 
     string ignore;
 
-    getline(archivo, ignore);
+    getline(archivo, ignore); // Evitar la primera linea del archivo
 
-    GastoDiario aux;
-    unsigned horaAux;
-    double precioAux;
+    Fecha fechaAux; // Variable auxiliar para leer la fecha
+    unsigned horaAux; // Variable auxiliar para leer la hora
+    double precioAux; // Variable auxiliar para leer el precio
 
-    Fecha primerDia = {1, 1, 2021};
-    Fecha primerMes = {1, mesInicial, 2021};
+    Fecha primerDia = {1, mesInicial, 2021};
 
     for (unsigned i = 0; i < MAX_DIAS; i++) {
         for (unsigned j = 0; j < NUM_HORAS; j++) {
-            if (leerPrecioHorario(archivo, aux.fecha, horaAux, precioAux)) {
-                if (aux.fecha.mes >= mesInicial && aux.fecha.mes <= mesFinal) {
+            if (leerPrecioHorario(archivo, fechaAux, horaAux, precioAux)) {
+                if (fechaAux.mes >= mesInicial && fechaAux.mes <= mesFinal) {
                     
-                    int index = diasTranscurridos(primerDia, aux.fecha) - diasTranscurridos(primerDia, primerMes);
+                    int index = diasTranscurridos(primerDia, fechaAux); // Variable para almacenar la información en el registro
 
-                    registros[index].fecha.agno = aux.fecha.agno;
-                    registros[index].fecha.mes = aux.fecha.mes;
-                    registros[index].fecha.dia = aux.fecha.dia;
-                    registros[index].precio[j] = precioAux;
+                    registros[index].fecha = fechaAux;
+                    registros[index].precio[horaAux] = precioAux;
 
                 }
             }
@@ -121,29 +87,19 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
 
 }
 
-/*
- * Pre:  «f» está asociado con un fichero externo que cumple con la sintaxis de
- *       la regla <fichero-consumos> establecida en el enunciado y está en
- *       disposición de leer desde el principio de una línea que cumple con la
- *       regla <consumo-horario>.
- * Post: Ha extraido de «f» la línea a la que hacía referencia la precondición
- *       y ha asignado a los parámetros «fecha», «hora» y «consumo»,
- *       respectivamente, los datos sobre la fecha, hora y consumo horario
- *       correspondientes a la línea que se ha extraído del flujo «f». 
- *       El flujo «f» continua asociado con el fichero externo y en disposición
- *       de extraer datos a partir de la siguiente línea.
- *       La función ha devuelto «true» si no se han terminado los datos del
- *       fichero en el intento de lectura y «false» en caso contrario.
- */
 bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consumo) {
     
+
+    // No es necesario sobreescribir el valor de fecha, ya que se lee en la función leerPrecioHora
+
+
     string ignore;
     string fechaS, consumoS, horaS;
 
     while(!f.eof()) {
         getline(f, ignore, ';');
 
-        if (ignore.empty()) { // Evita la ultima línea del archivo (línea en el archivo)
+        if (ignore.empty()) { // Evita la ultima línea del archivo (línea vacía)
             return false;
         }
         
@@ -163,30 +119,11 @@ bool leerConsumoHorario(istream& f, Fecha& fecha, unsigned& hora, double& consum
     return false;
 }
 
-/*
- * Pre:  «mesInicial» y «mesFinal» están ambos entre «PRIMER_MES» y «ULTIMO_MES»
- *       y mesInicial < mesFinal; si para cada mes entre «mesInicial» y
- *       «mesFinal» existe un fichero con nombre de la forma
- *       "datos/" + nombreCliente + "-2021-" + mes-con-dos-cifras + ".csv", este
- *       cumple con la sintaxis de la regla <fichero-consumos> establecida en el
- *       enunciado.
- * Post: Ha copiado los datos de precios horarios correspondientes a fechas 
- *       entre «mesInicial» y «mesFinal» presentes en los ficheros mencionados
- *       en la precondición en las componentes correspondientes a la hora del
- *       consumo del campo «consumo» en las primeras componentes del vector
- *       «registros». LOS DATOS DEL VECTOR CORRESPONDIENTE AL CAMPO «PRECIOS» NO
- *       SE HAN MODIFICADO.
- *       La función ha devuelto «true» si ha podido leer de todos los ficheros 
- *       referidos en la precondición correctamente, y «false» en caso contrario.
- */
-bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const unsigned mesFinal, GastoDiario registros[]) {
-    
-    if (nombreCliente != "a" && nombreCliente != "b") {
-        return false;
-    }
 
-    unsigned totalIndex = 0;
-    unsigned horaAux;
+bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const unsigned mesFinal, GastoDiario registros[]) {
+
+    unsigned totalIndex = 0; // Indice para tener en cuenta el numero de dias pasados
+    unsigned horaAux; // Indice para tener en cuenta la proxima hora a leer del archivo y guardarla en el registro
 
     string mesDatosRuta = RUTA_DATOS + nombreCliente + "-2021-";
     string ignore;
@@ -213,13 +150,13 @@ bool leerConsumos(const string nombreCliente, const unsigned mesInicial, const u
 
         getline(archivo, ignore); // Evitar primera linea del archivo
 
-        double auxiliar;
+        double auxiliar; // Variable auxiliar para almacenar el consumo en el registro
 
         while(leerConsumoHorario(archivo, registros[totalIndex].fecha, horaAux, auxiliar)) {
 
             registros[totalIndex].consumo[horaAux-1] = auxiliar;
 
-            if (horaAux == 24) {
+            if (horaAux == 24) { // Cuando la hora llega a 24, la próxima línea del fichero pertenece al siguiente dia
                 totalIndex++;
             }
         }
