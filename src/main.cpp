@@ -174,7 +174,7 @@ int main() {
 
     // Calculo del total de dias con datos que hay en el registro
     Fecha primerDia = {1, mesInicial, 2021};
-    Fecha ultimoDia = {31, mesFinal, 2021};
+    Fecha ultimoDia = {1, mesFinal+1, 2021};
 
     numRegistro = diasTranscurridos(primerDia, ultimoDia);
 

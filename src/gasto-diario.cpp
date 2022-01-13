@@ -11,7 +11,7 @@
  */
 unsigned horaMasCara(const GastoDiario& gasto) {
     
-    unsigned maxPrecio = gasto.precio[0];
+    double maxPrecio = gasto.precio[0];
     unsigned hora = 0;
 
     for (unsigned i = 1; i < NUM_HORAS; i++) {
