@@ -1,8 +1,8 @@
 /******************************************************************************\
  * Programación 1. Trabajo obligatorio curso 2021-22
  * Autores: Pablo Teres y Guillermo Torres  
- * Ultima revisión: ¡¡¡!!!
- * Resumen: ¡¡¡!!!
+ * Ultima revisión: 13 de enero de 2022
+ * Resumen: El fichero main es el archivo principal del proyecto "electricidad"
  * Nota: El código de este programa está repartido en varios módulos.
  *       Para compilarlo, hay que ejecutar el comando
  *           make all
@@ -29,6 +29,7 @@
 
 using namespace std;
 
+const unsigned ESPACIO = 2;
 
 /*
  * Pre:  «f» es «cout» o un flujo de la clase «ofstream» asociado con un fichero
@@ -47,7 +48,6 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     f << "INFORME DEL CLIENTE '" << usuarioMayusucla << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
     f << "--------------------------------------------------------------------------------------------------------------------" << endl << endl;
-
     cout << fixed << setprecision(5);
 
     // Calculo del dia mas barato entre los meses introducidos
@@ -55,16 +55,14 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     double costeMed;
 
     diaMasBarato(regDiarios, numRegs, costeMinimoFecha, costeMed);
-
     f << "El día completo más barato fue el "; 
     mostrar(f, costeMinimoFecha); 
-    f << ". Precio medio: " << costeMed / 1000 << " €/kwh" << endl;
+    f << ". Precio medio: " << fixed << setprecision(5) << costeMed / 1000 << " €/kwh" << endl;
     
 
     // Calculo de la hora, junto con precio, mas cara entre los meses introducidos
     unsigned horaCara;
     double precioMasCaro;
-
     Fecha diaHoraCara;
 
     cout << setprecision(2);
@@ -79,11 +77,14 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     // Calculo del importe minimo y total, así como del porcentaje de diferencia entre los dos
     double importeTotal = costeTerminoVariable(regDiarios, numRegs);
     double importeMinimo = costeMinimoPosible(regDiarios, numRegs);
-    double porcentajeDiferencia = (1- (importeMinimo / importeTotal)) * 100;
+    double porcentajeDiferencia = (1 - (importeMinimo / importeTotal)) * 100;
 
-    f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << importeTotal << " €." << endl;
-    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " << porcentajeDiferencia << " % menor)" << endl << endl;
+    f << "El importe del consumo eléctrico en el periodo considerado ha sido de " 
+      << fixed << setprecision(ESPACIO) << importeTotal << " €." << endl;
 
+    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " 
+      << fixed << setprecision(ESPACIO) << importeMinimo << " € (un " 
+      << fixed << setprecision(ESPACIO) << porcentajeDiferencia << " % menor)" << endl << endl;
 
 
     // Calculo del precio del consumo aplicando las tarifas respectivas
@@ -91,7 +92,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     f << "   Coste           Nombre de la tarifa" << endl;
     f << "-----------------------------------------------" << endl;
     for (unsigned i = 0; i < NUM_TARIFAS_COMERCIALES; i++) {
-        f << setw(10) << costeTarifaPlanaTramos(regDiarios, numRegs, TARIFAS_COMERCIALES[i]) << " €       " << TARIFAS_COMERCIALES[i].nombre << endl;
+        f << setw(10) << fixed << setprecision(ESPACIO) << costeTarifaPlanaTramos(regDiarios, numRegs, TARIFAS_COMERCIALES[i]) << " €       " << TARIFAS_COMERCIALES[i].nombre << endl;
     }
 
 }
@@ -110,7 +111,7 @@ void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal
     bool fechaCorrecta; // Variable auxiliar para verificar que los datos introducidos son correctos
 
     cout << "Escriba el nombre del usuario: ";
-    getline(cin, usuario);
+    cin >> usuario;
 
     do {
         cout << endl << "Escriba el mes inicial y el final: ";
@@ -135,8 +136,18 @@ void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal
     } while (!fechaCorrecta); 
 
     cout << "Escriba el nombre del fichero del informe" << endl << "(presione solo ENTRAR para escribirlo en la pantalla): ";
+    cin.ignore(1, '\n');
+    getline(cin, rutaArchivo);
+    cout << rutaArchivo;
 
-    cin >> rutaArchivo;
+    if (rutaArchivo.find('\\') != std::string::npos || rutaArchivo.find('/') != std::string::npos || 
+        rutaArchivo.find(':') != std::string::npos || rutaArchivo.find('*') != std::string::npos ||
+        rutaArchivo.find('?') != std::string::npos || rutaArchivo.find('\"') != std::string::npos ||
+        rutaArchivo.find('<') != std::string::npos || rutaArchivo.find('>') != std::string::npos ||
+        rutaArchivo.find('|') != std::string::npos) 
+        {
+            cout << "No se ha podido escribir en el fichero \"" << rutaArchivo << "\".";
+        }
 
     cout << endl;
 
@@ -156,18 +167,13 @@ int main() {
     int numRegistro = 0;
     const string nombreFicheroTarifas = "datos/tarifas-2021-ene-nov.csv";
 
-    //pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
-
-    // Información automática, no hay que pedirlo cada vez
-    usuario = "a";
-    mesInicial = 1;
-    mesFinal = 5;
+    
+    pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
 
     // Si hay algun fallo leyendo los archivos el programa finaliza.
     if (!leerConsumos(usuario, mesInicial, mesFinal, registro)) {
         return 1;
     }
-
     if (!leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro)){
         return 1;
     }
@@ -177,10 +183,7 @@ int main() {
     Fecha ultimoDia = {1, mesFinal+1, 2021};
 
     numRegistro = diasTranscurridos(primerDia, ultimoDia);
-
-    escribirInforme(cout, registro, numRegistro, usuario[0], mesInicial, mesFinal);
-
-/*
+    
     if (rutaArchivo.empty()) {
 
         escribirInforme(cout, registro, numRegistro, usuario[0], mesInicial, mesFinal);
@@ -196,10 +199,7 @@ int main() {
             return 0;
         }
 
-        escribirInforme(archivo, registro, numRegistro, usuario, mesInicial, mesFinal);
+        escribirInforme(archivo, registro, numRegistro, usuario[0], mesInicial, mesFinal);
     }
-
-    
-*/
     return 0;
 }

@@ -1,0 +1,21 @@
+INFORME DEL CLIENTE '"' ENTRE LOS MESES 11 Y 11 DE 2021
+--------------------------------------------------------------------------------------------------------------------
+
+El día completo más barato fue el 1-11-2021. Precio medio: 0.12600 €/kwh
+La hora más cara tuvo lugar el 30-11-2021 a las 18:00. Precio: 0.40377 €/kwh
+
+El importe del consumo eléctrico en el periodo considerado ha sido de 156.49 €.
+El importe mínimo concentrando todo el consumo diario en la hora más barata
+habría sido de 125.37 € (un 19.89 % menor)
+
+COSTE CON TARIFAS COMERCIALES
+   Coste           Nombre de la tarifa
+-----------------------------------------------
+     95.34 €       Compañía NUF: Un precio 24h
+    103.80 €       Compañía NUF: Tres precios
+    100.69 €       Compañía END: UNA Light
+    103.16 €       Compañía END: UNA 3 Periods
+    127.20 €       Compañía END: Tiempo 3 Periods
+    182.86 €       Compañía LOG: Alfa Hogar 2.0
+    177.10 €       Compañía LOG: Alfa Fijo Único Hogar
+     97.28 €       Compañía E21: Precio Fijo en Mercado Regulado
