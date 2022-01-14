@@ -1,3 +1,14 @@
+
+/******************************************************************************\
+ * Programación 1. Trabajo obligatorio curso 2021-22
+ * Autores: Guillermo Torres y Pablo Terés
+ * Ultima revisión: 14-01-2022
+ * Resumen: Fichero de interfaz «tarifas-comerciales.hpp» del módulo
+ *          «tarifas-comerciales» que contiene tipos registro y funciones para la 
+ *          lectura de datos respecto a los ficheros almacenados en la carpeta datos.
+\******************************************************************************/
+
+
 #include <string>
 #include "gasto-diario.hpp"
 #pragma once

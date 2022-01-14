@@ -1,7 +1,7 @@
 /******************************************************************************\
  * Programación 1. Trabajo obligatorio curso 2021-22
  * Autores: Pablo Teres y Guillermo Torres  
- * Ultima revisión: 13 de enero de 2022
+ * Ultima revisión: 14 de enero de 2022
  * Resumen: El fichero main es el archivo principal del proyecto "electricidad"
  * Nota: El código de este programa está repartido en varios módulos.
  *       Para compilarlo, hay que ejecutar el comando
@@ -65,26 +65,23 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     double precioMasCaro;
     Fecha diaHoraCara;
 
-    cout << setprecision(2);
-
     horaMasCara(regDiarios, numRegs, diaHoraCara, horaCara, precioMasCaro);
 
     f << "La hora más cara tuvo lugar el ";
     mostrar(f, diaHoraCara); 
     f << " a las " << horaCara << ":00. Precio: " << precioMasCaro / 1000 << " €/kwh" << endl << endl;
 
+    cout << setprecision(2);
 
     // Calculo del importe minimo y total, así como del porcentaje de diferencia entre los dos
     double importeTotal = costeTerminoVariable(regDiarios, numRegs);
     double importeMinimo = costeMinimoPosible(regDiarios, numRegs);
     double porcentajeDiferencia = (1 - (importeMinimo / importeTotal)) * 100;
 
-    f << "El importe del consumo eléctrico en el periodo considerado ha sido de " 
-      << fixed << setprecision(ESPACIO) << importeTotal << " €." << endl;
+    f << "El importe del consumo eléctrico en el periodo considerado ha sido de " << importeTotal << " €." << endl;
 
-    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " 
-      << fixed << setprecision(ESPACIO) << importeMinimo << " € (un " 
-      << fixed << setprecision(ESPACIO) << porcentajeDiferencia << " % menor)" << endl << endl;
+    f << "El importe mínimo concentrando todo el consumo diario en la hora más barata" << endl << "habría sido de " << importeMinimo << " € (un " 
+    << porcentajeDiferencia << " % menor)" << endl << endl;
 
 
     // Calculo del precio del consumo aplicando las tarifas respectivas
@@ -92,7 +89,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     f << "   Coste           Nombre de la tarifa" << endl;
     f << "-----------------------------------------------" << endl;
     for (unsigned i = 0; i < NUM_TARIFAS_COMERCIALES; i++) {
-        f << setw(10) << fixed << setprecision(ESPACIO) << costeTarifaPlanaTramos(regDiarios, numRegs, TARIFAS_COMERCIALES[i]) << " €       " << TARIFAS_COMERCIALES[i].nombre << endl;
+        f << setw(10) << costeTarifaPlanaTramos(regDiarios, numRegs, TARIFAS_COMERCIALES[i]) << " €       " << TARIFAS_COMERCIALES[i].nombre << endl;
     }
 
 }
@@ -106,7 +103,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
  * Post: Se han insertado los datos necesarios en las posibles variables y se ha detectado
  *       si se ha producido un error (como un intervalo de meses mal introducido, por ejemplo)
  */
-void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal, string& rutaArchivo) {
+void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal) {
     
     bool fechaCorrecta; // Variable auxiliar para verificar que los datos introducidos son correctos
 
@@ -117,16 +114,16 @@ void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal
         cout << endl << "Escriba el mes inicial y el final: ";
         cin >> mesInicial >> mesFinal;
         fechaCorrecta = true;
-        
+
         if (mesInicial < 1 || mesInicial > 12) {
             cout << "El mes inicial tiene que estar entre 1 y 11." << endl;
             fechaCorrecta = false;
         }
-        else if (mesFinal < 1 || mesInicial > 12) {
+        if (mesFinal < 1 || mesFinal > 12) {
             cout << "El mes final tiene que estar entre 1 y 11." << endl;
             fechaCorrecta = false;
         }
-        else if (mesInicial > mesFinal) {
+        if (mesInicial > mesFinal) {
             cout << "El mes inicial tiene que ser menor o igual que el mes final." << endl;
             fechaCorrecta = false;
         }
@@ -134,6 +131,12 @@ void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal
         cout << endl;
 
     } while (!fechaCorrecta); 
+
+    
+
+}
+
+void pedirNombreFichero(string& rutaArchivo) {
 
     cout << "Escriba el nombre del fichero del informe" << endl << "(presione solo ENTRAR para escribirlo en la pantalla): ";
     cin.ignore(1, '\n');
@@ -154,9 +157,24 @@ void pedirInformacion (string& usuario, unsigned& mesInicial, unsigned& mesFinal
 }
 
 /*
- * Función principal del programa. Se inicializan las variables necesarias para el programa en pedirInformacion
- * para posteriormente leer los datos necesarios de los ficheros en leerConsumos y leerPrecios.
- * Por último, se operan con dichos datos y se escribe en pantalla o en un archivo especificado los datos que se buscan.
+ * Función principal del programa. Se inicializan las variables necesarias para el programa en pedirInformacion a través
+ * de los requisitos del usuario para posteriormente la lectura de datos necesarios de los ficheros en leerConsumos y leerPrecios.
+ * Por último, se operan con dichos datos y se escribe en pantalla o en un archivo especificado los datos que se buscan en
+ * la función escribir informe. Estas operaciones son hayar el dia con el coste medio más barato, así como su precio medio;
+ * hayar la hora más cara, así como su fecha y su precio; hayar el importe del consumo eléctrico en el periodo dado y el 
+ * importe asumiendo que todos los calculos se realizan con la hora mas barata, así como el porcentaje de diferencia entre estos dos valores.
+ * Por último se calcula el precio considerando diversas tarifas.
+ * 
+ * !!! Aviso:
+ * 
+ * Sobre posible error en el programa: Cuando se trata con archivos del usuario A algunos resultados pueden resultar en 
+ * valer un par de centimos más de aquellos mostrados en las trazas en el pdf del trabajo, sin embargo, parece funcionar
+ * correctamente con aquellos resultados obtenidos del usuario B y comparados con las trazas del pdf. El motivo de este suceso
+ * puede ser resultado debido a que el compilador asume que los doubles almacenados en los struct "tarifas" tienen valores periodicos,
+ * arrastrando un valor muy pequeño a lo largo de las multiplicaciones, o que haya algun cambio en los propios ficheros del usuario A
+ * descargados desde github, muy posiblemente entre los meses 1 y 5 dado a que la diferencia de centimos es la misma en las trazas
+ * 1 y 5 (que tratan los meses del 1 a 11 y 1 a 5 del usuario A respectivamente).
+ * 
  */
 int main() {
 
@@ -168,7 +186,7 @@ int main() {
     const string nombreFicheroTarifas = "datos/tarifas-2021-ene-nov.csv";
 
     
-    pedirInformacion(usuario, mesInicial, mesFinal, rutaArchivo);
+    pedirInformacion(usuario, mesInicial, mesFinal);
 
     // Si hay algun fallo leyendo los archivos el programa finaliza.
     if (!leerConsumos(usuario, mesInicial, mesFinal, registro)) {
@@ -177,6 +195,8 @@ int main() {
     if (!leerPrecios(nombreFicheroTarifas, mesInicial, mesFinal, registro)){
         return 1;
     }
+
+    pedirNombreFichero(rutaArchivo);
 
     // Calculo del total de dias con datos que hay en el registro
     Fecha primerDia = {1, mesInicial, 2021};
@@ -200,6 +220,7 @@ int main() {
         }
 
         escribirInforme(archivo, registro, numRegistro, usuario[0], mesInicial, mesFinal);
+        cout << endl << "Informe '" << rutaArchivo << "' creado correctamente.";
     }
     return 0;
 }

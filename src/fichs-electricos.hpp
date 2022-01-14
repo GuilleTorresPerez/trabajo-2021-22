@@ -1,7 +1,8 @@
 /******************************************************************************\
  * Programación 1. Trabajo obligatorio curso 2021-22
  * Autor: Miguel Ángel Latre
- * Ultima revisión: 5-12-2021
+ * Autores ultima modificación: Guillermo Torres y Pablo Terés
+ * Ultima revisión: 14-01-2022
  * Resumen: Fichero de interfaz «fichs-electricos.hpp» del módulo
  *          «fichs-electricos» que contiene funciones para la extracción de los
  *          datos relevantes de los ficheros de precios y consumo eléctrico.

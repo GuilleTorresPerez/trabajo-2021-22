@@ -1,3 +1,13 @@
+
+/******************************************************************************\
+ * Programación 1. Trabajo obligatorio curso 2021-22
+ * Autores: Guillermo Torres y Pablo Terés
+ * Ultima revisión: 14-01-2022
+ * Resumen: Fichero que contiene funciones para la gestion de los datos
+ *          almacenados en un registro que contiene información sobre todos los dias
+ *          entre dos determinadas fechas.
+\******************************************************************************/
+
 #include "gasto-diario.hpp"
 #include <iostream>
 #include <iomanip>

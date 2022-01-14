@@ -1,4 +1,12 @@
 
+/******************************************************************************\
+ * Programación 1. Trabajo obligatorio curso 2021-22
+ * Autores: Guillermo Torres y Pablo Terés
+ * Ultima revisión: 14-01-2022
+ * Resumen: Fichero que contiene funciones para la extracción de los
+ *          datos relevantes de los ficheros de precios y consumo eléctrico.
+\******************************************************************************/
+
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
@@ -76,7 +84,7 @@ bool leerPrecios(const string nombreFichero, const unsigned mesInicial, const un
                     int index = diasTranscurridos(primerDia, fechaAux); // Variable para almacenar la información en el registro
 
                     registros[index].fecha = fechaAux;
-                    registros[index].precio[horaAux] = precioAux;
+                    registros[index].precio[horaAux] = precioAux; // También se podría usar la variable local j para indexar la hora
 
                 }
             }
