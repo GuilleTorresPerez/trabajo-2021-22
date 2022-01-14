@@ -46,7 +46,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
 
     char usuarioMayusucla = nombreCliente - 32;
 
-    f << "INFORME DEL CLIENTE '" << usuarioMayusucla << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
+    f << endl << "INFORME DEL CLIENTE '" << usuarioMayusucla << "' ENTRE LOS MESES " << mesInicial << " Y " << mesFinal << " DE 2021" << endl;
     f << "--------------------------------------------------------------------------------------------------------------------" << endl << endl;
     cout << fixed << setprecision(5);
 
@@ -71,7 +71,7 @@ void escribirInforme(ostream& f, const GastoDiario regDiarios[], const unsigned 
     mostrar(f, diaHoraCara); 
     f << " a las " << horaCara << ":00. Precio: " << precioMasCaro / 1000 << " €/kwh" << endl << endl;
 
-    cout << setprecision(2);
+    f << setprecision(2);
 
     // Calculo del importe minimo y total, así como del porcentaje de diferencia entre los dos
     double importeTotal = costeTerminoVariable(regDiarios, numRegs);
@@ -141,19 +141,6 @@ void pedirNombreFichero(string& rutaArchivo) {
     cout << "Escriba el nombre del fichero del informe" << endl << "(presione solo ENTRAR para escribirlo en la pantalla): ";
     cin.ignore(1, '\n');
     getline(cin, rutaArchivo);
-    cout << rutaArchivo;
-
-    if (rutaArchivo.find('\\') != std::string::npos || rutaArchivo.find('/') != std::string::npos || 
-        rutaArchivo.find(':') != std::string::npos || rutaArchivo.find('*') != std::string::npos ||
-        rutaArchivo.find('?') != std::string::npos || rutaArchivo.find('\"') != std::string::npos ||
-        rutaArchivo.find('<') != std::string::npos || rutaArchivo.find('>') != std::string::npos ||
-        rutaArchivo.find('|') != std::string::npos) 
-        {
-            cout << "No se ha podido escribir en el fichero \"" << rutaArchivo << "\".";
-        }
-
-    cout << endl;
-
 }
 
 /*
@@ -215,12 +202,12 @@ int main() {
         archivo.open(rutaArchivo, ios::out);
 
         if (archivo.fail()) {
-            cout << "No se ha podido crear el archivo." << rutaArchivo << endl;
+            cout << "No se ha podido escribir en el fichero" << rutaArchivo << endl;
             return 0;
         }
 
         escribirInforme(archivo, registro, numRegistro, usuario[0], mesInicial, mesFinal);
-        cout << endl << "Informe '" << rutaArchivo << "' creado correctamente.";
+        cout << "Informe '" << rutaArchivo << "' creado correctamente.";
     }
     return 0;
 }
