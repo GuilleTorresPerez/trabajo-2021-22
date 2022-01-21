@@ -3,7 +3,7 @@
  * Programación 1. Trabajo obligatorio curso 2021-22
  * Autores: Guillermo Torres y Pablo Terés
  * Ultima revisión: 14-01-2022
- * Resumen: Fichero de interfaz funciones para la lectura de datos respecto a los ficheros almacenados en la carpeta datos.
+ * Resumen: Fichero con funciones para la lectura de datos respecto a los ficheros almacenados en la carpeta datos.
 \******************************************************************************/
 
 

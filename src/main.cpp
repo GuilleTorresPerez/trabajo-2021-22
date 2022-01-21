@@ -151,17 +151,6 @@ void pedirNombreFichero(string& rutaArchivo) {
  * hayar la hora más cara, así como su fecha y su precio; hayar el importe del consumo eléctrico en el periodo dado y el 
  * importe asumiendo que todos los calculos se realizan con la hora mas barata, así como el porcentaje de diferencia entre estos dos valores.
  * Por último se calcula el precio considerando diversas tarifas.
- * 
- * !!! Aviso:
- * 
- * Sobre posible error en el programa: Cuando se trata con archivos del usuario A algunos resultados pueden resultar en 
- * valer un par de centimos más de aquellos mostrados en las trazas en el pdf del trabajo, sin embargo, parece funcionar
- * correctamente con aquellos resultados obtenidos del usuario B y comparados con las trazas del pdf. El motivo de este suceso
- * puede ser resultado debido a que el compilador asume que los doubles almacenados en los struct "tarifas" tienen valores periodicos,
- * arrastrando un valor muy pequeño a lo largo de las multiplicaciones, o que haya algun cambio en los propios ficheros del usuario A
- * descargados desde github, muy posiblemente entre los meses 1 y 5 dado a que la diferencia de centimos es la misma en las trazas
- * 1 y 5 (que tratan los meses del 1 a 11 y 1 a 5 del usuario A respectivamente).
- * 
  */
 int main() {
 

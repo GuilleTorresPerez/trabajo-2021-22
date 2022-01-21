@@ -4,8 +4,8 @@
  * Autores: Guillermo Torres y Pablo Terés
  * Ultima revisión: 14-01-2022
  * Resumen: Fichero que contiene funciones para la gestion de los datos
- *          almacenados en un registro que contiene información sobre todos los dias
- *          entre dos determinadas fechas.
+ *          almacenados en un registro que contiene información sobre consumo y precio de  todos los dias
+ *          entre dos determinadas fechas. 
 \******************************************************************************/
 
 #include "gasto-diario.hpp"

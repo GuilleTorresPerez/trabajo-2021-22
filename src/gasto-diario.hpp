@@ -5,7 +5,7 @@
  * Ultima revisión: 14-01-2022
  * Resumen: Fichero de interfaz «gasto-diario.hpp» del módulo
  *          «gasto-diario» que contiene tipos registro y funciones para la
- *          gestión de datos horarios de consumo y precios de un día concreto.
+ *          gestión de datos de horarios de consumo y precios de un día concreto.
 \******************************************************************************/
 #include "fecha.hpp"
 #pragma once

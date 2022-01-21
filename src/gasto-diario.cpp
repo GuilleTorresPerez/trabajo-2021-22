@@ -3,7 +3,7 @@
  * Autores: Guillermo Torres y Pablo Terés
  * Ultima revisión: 14-01-2022
  * Resumen: Fichero que contiene funciones para la
- *          gestión de datos horarios de consumo y precios de un día concreto.
+ *          gestión de datos de horarios de consumo y precios de un día concreto.
 \******************************************************************************/
 
 #include "gasto-diario.hpp"
